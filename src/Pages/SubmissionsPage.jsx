@@ -13,28 +13,34 @@ import {
   GetListOfAllFilesInFolder,
 } from "../Actions/SupabaseActions";
 
-import { FormatTime } from "../Actions/HelperActions";
+import {
+  FormatTime,
+  SortArrayBasedOnCreatedAt,
+} from "../Actions/HelperActions";
+import { FaFilePdf } from "react-icons/fa";
 
 function SubmissionsPage() {
   const submissions = useLoaderData();
-
   const { pathname } = useLocation();
+  const { code, assName } = useParams();
 
   //removes supabase placeholder file from array
   const allSubmissions = submissions.filter(
     (c) => c.name !== ".emptyFolderPlaceholder",
   );
 
-  const { code, assName } = useParams();
+  //arrange submissions by date submitted
+  const sortedSubmissions = SortArrayBasedOnCreatedAt(allSubmissions);
 
-  async function handleDownload(filename) {
+  async function handleDownload(filename, assignment = false) {
     try {
-      //if we want the assignment itself, download the assignment, if not download what we submitted
+      //if we want the assignment itself, download the assignment, if not download the submission clicked
 
-      // Fetch the PDF file content
-      const pdfBlob = await DownloadFile(
-        `${code}/assignments/submissions/${assName}/${filename}`,
-      );
+      const pdfBlob = !assignment
+        ? await DownloadFile(
+            `${code}/assignments/submissions/${assName}/${filename}`,
+          )
+        : await DownloadFile(`${code}/assignments/uploads/${filename}`);
 
       // Create a Blob URL from the Blob
       const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -67,15 +73,17 @@ function SubmissionsPage() {
         </li>
       </Navbar>
 
-      <main className="bg-primaryBgColor row-span-2 flex h-full  flex-col space-y-4 p-4 lg:px-6 lg:py-4">
-        <div className="w-full overflow-y-auto">
-          <h2 className="bg-bellsBlue cursor-default border border-stone-400 p-2 text-xs font-semibold uppercase text-white lg:text-left">
-            All Submissions
-          </h2>
+      <main className="row-span-2 flex h-full flex-col space-y-2 bg-primaryBgColor p-4 lg:px-6  lg:py-4">
+        <DownloadAssignment handleDownload={handleDownload} />
 
-          {allSubmissions.length ? (
+        {sortedSubmissions.length ? (
+          <div className="w-full overflow-y-auto">
+            <h2 className="cursor-default border border-stone-400 bg-bellsBlue p-2 text-xs font-semibold uppercase text-white lg:text-left">
+              All Submissions ({sortedSubmissions.length})
+            </h2>
+
             <table
-              className={`w-full divide-y  divide-stone-400 overflow-hidden border border-stone-400 p-4 text-center `}
+              className={`w-full divide-y divide-stone-400 overflow-hidden border border-stone-400 p-4 text-center `}
             >
               <thead className=" bg-bellsBlue text-white">
                 <tr className="divide-x divide-stone-400">
@@ -88,22 +96,28 @@ function SubmissionsPage() {
               </thead>
 
               <tbody className="divide-y divide-stone-400">
-                {allSubmissions.map((submission, index) => {
+                {sortedSubmissions.map((submission, index) => {
                   return (
                     <tr
-                      className={`hover:bg-bellsBlue cursor-pointer divide-x   divide-stone-400 transition-all duration-300 ease-in-out hover:text-white ${index % 2 ? "bg-tableEven" : "bg-tableOdd"}`}
+                      className={`cursor-pointer divide-x divide-stone-400   transition-all duration-300 ease-in-out hover:bg-bellsBlue hover:text-white ${index % 2 ? "bg-tableEven" : "bg-tableOdd"}`}
                       key={index}
                       onClick={() => handleDownload(submission.name)}
                     >
                       <td className="py-3">{index + 1}</td>
 
-                      <td className="hidden py-3 lg:block">
-                        {submission.name} &nbsp;
+                      <td className="hidden items-center justify-center py-3 lg:flex">
+                        <span className="w-64 truncate">
+                          {submission.name.replace("-", "/")}
+                        </span>
+
                         <span className="text-xs">[click to download]</span>
                       </td>
 
                       <td className="flex items-center justify-center py-3 lg:hidden">
-                        {submission.name} &nbsp;
+                        <span className="w-36 truncate">
+                          {submission.name.replace("-", "/")}
+                        </span>
+
                         <span className="text-base">
                           <IoCloudDownloadOutline />
                         </span>
@@ -117,12 +131,25 @@ function SubmissionsPage() {
                 })}
               </tbody>
             </table>
-          ) : (
-            <NoNotesOrAss label={"Submissions"} />
-          )}
-        </div>
+          </div>
+        ) : (
+          <NoNotesOrAss label={"Submissions"} />
+        )}
       </main>
     </>
+  );
+}
+
+function DownloadAssignment({ handleDownload }) {
+  const { assName } = useParams();
+
+  return (
+    <p
+      className="flex cursor-pointer items-center gap-0.5 self-start text-sm font-semibold underline transition-colors duration-300 ease-in-out hover:text-hoverYellow"
+      onClick={() => handleDownload(assName, true)}
+    >
+      Download {assName} <FaFilePdf />
+    </p>
   );
 }
 

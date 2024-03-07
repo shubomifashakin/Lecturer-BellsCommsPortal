@@ -230,7 +230,7 @@ function LoginPage() {
   //if it has expired, return the sign in page, if not, return nothing cus we are redirecting
 
   return (
-    <main className="bg-primaryBgColor flex h-dvh w-full items-center justify-center px-6">
+    <main className="flex h-dvh w-full items-center justify-center bg-primaryBgColor px-6">
       <div className="w-full space-y-3 md:w-3/4 lg:w-1/2 ">
         <span className="flex justify-center">
           <CheckBox checked={checked} setChecked={setChecked} />
@@ -263,7 +263,7 @@ function LoginInForm() {
       //gets the role of the user
       const [{ role }] = await CheckRole();
 
-      //checks if the users role is student
+      //checks if the users role is lecturer
       if (role !== "lecturer") {
         throw new Error("You are not a lecturer");
       }
@@ -273,7 +273,9 @@ function LoginInForm() {
       navigate("home");
     } catch (err) {
       toast.error(err.message);
+
       localStorage.removeItem("sb-xqpgunhudqrnqtfkbiwg-auth-token");
+
       setSubmitting(false);
     }
   }
@@ -319,7 +321,7 @@ function LoginInForm() {
           disabled={submitting}
           type={"full"}
           label={"Log In"}
-          className="font-base  bg-bellsBlue hover:bg-hoverBellsBlue block w-full rounded-sm p-2 text-center text-base text-white duration-300"
+          className="font-base  block w-full rounded-sm bg-bellsBlue p-2 text-center text-base text-white duration-300 hover:bg-hoverBellsBlue"
         />
       </form>
     </div>
@@ -396,13 +398,13 @@ function SignUpForm({ setChecked }) {
 
           <div className="flex space-x-2">
             <span
-              className={`block h-3 w-3 rounded-full  ${step >= 1 ? " bg-hoverBellsBlue border border-stone-700 " : "bg-bellsBlue"}`}
+              className={`block h-3 w-3 rounded-full  ${step >= 1 ? " border border-stone-700 bg-hoverBellsBlue " : "bg-bellsBlue"}`}
             ></span>
             <span
-              className={`block h-3 w-3 rounded-full  ${step >= 2 ? " bg-hoverBellsBlue border border-stone-700 " : "bg-bellsBlue"}`}
+              className={`block h-3 w-3 rounded-full  ${step >= 2 ? " border border-stone-700 bg-hoverBellsBlue " : "bg-bellsBlue"}`}
             ></span>
             <span
-              className={`block h-3 w-3 rounded-full  ${step >= 3 ? " bg-hoverBellsBlue border border-stone-700 " : "bg-bellsBlue"}`}
+              className={`block h-3 w-3 rounded-full  ${step >= 3 ? " border border-stone-700 bg-hoverBellsBlue " : "bg-bellsBlue"}`}
             ></span>
           </div>
         </div>
@@ -493,7 +495,7 @@ function Step1Form() {
 
   return (
     <form
-      className="animate-flash flex flex-col space-y-6 "
+      className="flex animate-flash flex-col space-y-6 "
       onSubmit={handleSubmit}
     >
       <InputGroup label={"Email"}>
@@ -650,7 +652,7 @@ function Step2Form() {
 
   return (
     <form
-      className="animate-flash flex flex-col space-y-6 "
+      className="flex animate-flash flex-col space-y-6 "
       onSubmit={handleSubmit}
     >
       <InputGroup label={"Name"}>
@@ -840,10 +842,10 @@ function Step3Form() {
 
                     <div className="flex items-center">
                       <button
-                        className="hover:text-hoverBellsBlue active:text-hoverBellsBlue text-sm transition-colors duration-300 ease-in-out"
+                        className="text-sm transition-colors duration-300 ease-in-out hover:text-hoverBellsBlue active:text-hoverBellsBlue"
                         onClick={(e) => addCourse(e, course.course_code)}
                       >
-                        <IoIosAddCircle className=" hover:text-hoverBellsBlue text-xl text-black" />
+                        <IoIosAddCircle className=" text-xl text-black hover:text-hoverBellsBlue" />
                       </button>
                     </div>
                   </div>
@@ -871,10 +873,10 @@ function Step3Form() {
 
                   <div className="flex items-center px-1">
                     <button
-                      className="hover:text-hoverBellsBlue active:text-hoverBellsBlue text-sm transition-colors duration-300 ease-in-out"
+                      className="text-sm transition-colors duration-300 ease-in-out hover:text-hoverBellsBlue active:text-hoverBellsBlue"
                       onClick={(e) => removeCourse(e, course)}
                     >
-                      <IoIosCloseCircle className=" hover:text-hoverBellsBlue text-xl text-black" />
+                      <IoIosCloseCircle className=" text-xl text-black hover:text-hoverBellsBlue" />
                     </button>
                   </div>
                 </div>
@@ -900,7 +902,7 @@ function BottomLinks({ checked }) {
         Are you a Student? &nbsp;
         <a
           href="https://student-bellscommsportal.netlify.app/"
-          className="hover:text-hoverBellsBlue underline transition-colors duration-300 ease-in-out"
+          className="underline transition-colors duration-300 ease-in-out hover:text-hoverBellsBlue"
         >
           Visit Here
         </a>
@@ -909,7 +911,7 @@ function BottomLinks({ checked }) {
       {!checked ? (
         <Link
           to={"/forgotPassword"}
-          className="hover:text-hoverBellsBlue text-xs  underline transition-colors duration-300 ease-in-out"
+          className="text-xs underline  transition-colors duration-300 ease-in-out hover:text-hoverBellsBlue"
         >
           Forgot Password?
         </Link>

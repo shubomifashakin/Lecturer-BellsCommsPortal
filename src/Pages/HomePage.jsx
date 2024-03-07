@@ -2,9 +2,9 @@ import { useLoaderData, useNavigate } from "react-router";
 
 import { FaEye } from "react-icons/fa";
 
-import { GetLecturersData } from "../Actions/SupabaseActions";
-
 import { Navbar } from "../Components/Navbar";
+
+import { GetLecturersData } from "../Actions/SupabaseActions";
 
 import { SortArrayBasedOnLetters } from "../Actions/HelperActions";
 
@@ -19,23 +19,23 @@ function HomePage() {
     <>
       <Navbar />
 
-      <main className="bg-primaryBgColor row-span-2 flex flex-col  space-y-4  px-6 py-4 lg:py-2 ">
+      <main className="row-span-2 flex flex-col space-y-4  bg-primaryBgColor  px-6 py-4 lg:py-2 ">
         <div className="flex cursor-default flex-col space-y-2  text-xs text-white lg:flex-row lg:items-center lg:justify-between">
-          <p className=" bg-bellsBlue rounded-sm px-2 py-2 shadow-sm">
+          <p className=" rounded-sm bg-bellsBlue px-2 py-2 shadow-sm">
             Name: <span className="font-semibold">{name}</span>
           </p>
 
-          <p className=" bg-bellsBlue rounded-sm px-2 py-2 shadow-sm">
+          <p className=" rounded-sm bg-bellsBlue px-2 py-2 shadow-sm">
             College: <span className="font-semibold">{college}</span>
           </p>
 
-          <p className=" bg-bellsBlue rounded-sm px-2 py-2 shadow-sm">
+          <p className=" rounded-sm bg-bellsBlue px-2 py-2 shadow-sm">
             Department: <span className="font-semibold">{dept}</span>
           </p>
         </div>
 
         <div className="w-full overflow-y-auto">
-          <h2 className="bg-bellsBlue cursor-default border border-stone-400 p-2 text-xs font-semibold uppercase text-white lg:text-left">
+          <h2 className="cursor-default border border-stone-400 bg-bellsBlue p-2 text-xs font-semibold uppercase text-white lg:text-left">
             Courses Offered
           </h2>
 
@@ -51,7 +51,7 @@ function HomePage() {
               {courses2.map((course, index) => {
                 return (
                   <tr
-                    className={`hover:bg-bellsBlue cursor-pointer divide-x   divide-stone-400 transition-all duration-300 ease-in-out hover:text-white ${index % 2 ? "bg-tableEven" : "bg-tableOdd"}`}
+                    className={`cursor-pointer divide-x divide-stone-400   transition-all duration-300 ease-in-out hover:bg-bellsBlue hover:text-white ${index % 2 ? "bg-tableEven" : "bg-tableOdd"}`}
                     onClick={() => navigate(`/${course}`)}
                     key={index}
                   >
@@ -81,7 +81,6 @@ function HomePage() {
 
 export async function HomeLoader() {
   const lectData = await GetLecturersData();
-  console.log(lectData);
   return lectData[0] ? lectData[0] : null;
 }
 

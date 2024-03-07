@@ -133,20 +133,6 @@ export async function GetListOfAllFilesInFolder(path) {
   return data;
 }
 
-export async function FileExists({ filePath, fileName }) {
-  const { data, error } = await supabase.storage
-    .from("Courses")
-    .list(filePath, {
-      offset: 0,
-      sortBy: { column: "name", order: "asc" },
-      search: fileName,
-    });
-
-  if (error?.message) throw error;
-
-  return data;
-}
-
 export async function DownloadFile(filePath) {
   const { data, error } = await supabase.storage
     .from("Courses")

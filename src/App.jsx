@@ -7,11 +7,12 @@ import {
 import { Toaster } from "react-hot-toast";
 
 import LoginPage from "./Pages/LoginPage";
-import HomePage, { HomeLoader } from "./Pages/HomePage";
-import CoursePage, { CourseLoader } from "./Pages/CoursePage";
 import AssignmentsPage from "./Pages/AssignmentsPage";
+import UploadPage from "./Pages/UploadPage";
 import NotesPage from "./Pages/NotesPage";
 import ForgotPassswordPage from "./Pages/ForgotPassswordPage";
+import HomePage, { HomeLoader } from "./Pages/HomePage";
+import CoursePage, { CourseLoader } from "./Pages/CoursePage";
 import SubmissionsPage, { SubmissionsLoader } from "./Pages/SubmissionsPage";
 
 import Layout from "./Components/Layout";
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
           { index: true, element: <Navigate replace to={"notes"} /> },
           { path: "assignments", element: <AssignmentsPage /> },
           { path: "notes", element: <NotesPage /> },
+          { path: "upload", element: <UploadPage /> },
         ],
       },
       {

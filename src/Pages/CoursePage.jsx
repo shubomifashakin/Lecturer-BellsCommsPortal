@@ -16,10 +16,12 @@ function CoursePage() {
         </li>
       </Navbar>
 
-      <main className="bg-primaryBgColor row-span-2 flex flex-col items-center space-y-4 px-6 py-4">
-        <div className="bg-bellsBlue space-x-5 rounded-sm px-4 py-2">
+      <main className="row-span-2 flex flex-col items-center space-y-4 bg-primaryBgColor px-6 py-4">
+        <div className="space-x-5 rounded-sm bg-bellsBlue px-4 py-2">
           <CourseNavLink path={"Notes"} label={"Notes"} />
+
           <CourseNavLink path={"Assignments"} label={"Assignments"} />
+
           <CourseNavLink path={"Upload"} label={"Upload"} />
         </div>
 
@@ -41,6 +43,7 @@ export async function CourseLoader({ params }) {
         offset: 0,
         sortBy: { column: "name", order: "asc" },
       }),
+
     await supabase.storage.from("Courses").list(`${params.code}/notes`, {
       offset: 0,
       sortBy: { column: "name", order: "asc" },
