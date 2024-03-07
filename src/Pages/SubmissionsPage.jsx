@@ -81,7 +81,7 @@ function SubmissionsPage() {
                 <tr className="divide-x divide-stone-400">
                   <th className="py-3.5 text-sm lg:text-base">S/N</th>
 
-                  <th className="py-3.5 text-sm lg:text-base">Title</th>
+                  <th className="py-3.5 text-sm lg:text-base">Student</th>
 
                   <th className="py-3.5 text-sm lg:text-base">Submitted</th>
                 </tr>
