@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 545 signature */
+
+@layer components {
+  .input-style {
+    @apply rounded-sm border-none px-2 py-2.5 outline-none outline-offset-0 transition-all duration-500 ease-in-out hover:outline-1 hover:outline-stone-700 focus:outline-1 focus:outline-stone-700 active:outline-1 active:outline-stone-700;
+  }
+}
+
+*::-webkit-scrollbar {
+  height: 2px;
+  box-sizing: border-box;
+  background: none;
+  width: 2px;
+}
+
+*::-webkit-scrollbar-track {
+  height: 20px !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #3c9ac9;
+  width: 0.5px;
+}
+
+* {
+  scrollbar-color: #3c9ac9 transparent;
+  scrollbar-width: thin;
+}
+
+.active {
+  color: #fcfc62;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+.loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #f1f114;
+  width: 16px;
+  height: 16px;
+  transform: translate(-50%, 50%);
+  border-radius: 50%;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
