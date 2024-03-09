@@ -16,8 +16,8 @@ function AssignmentsPage() {
   const navigate = useNavigate();
   const { code } = useParams();
 
-  function handleNavigate({ courseCode, assName }) {
-    navigate(`/submissions/${courseCode}/${assName}`);
+  function handleNavigate({ courseCode, assFileName }) {
+    navigate(`/submissions/${courseCode}/${assFileName}`);
   }
 
   return (
@@ -33,11 +33,17 @@ function AssignmentsPage() {
               <th className="py-3.5 text-sm lg:text-base">Title</th>
 
               <th className="py-3.5 text-sm lg:text-base">Uploaded</th>
+
+              <th className="py-3.5 text-sm lg:text-base">Due</th>
             </tr>
           </thead>
 
           <tbody className="divide-y divide-stone-400">
             {allAssignments.map((assignment, index) => {
+              const assignmentName = assignment.name.split("-")[0];
+
+              const dueDate = assignment.name.split("-")[1];
+
               return (
                 <tr
                   className={`cursor-pointer divide-x divide-stone-400   transition-all duration-300 ease-in-out hover:bg-bellsBlue hover:text-white ${index % 2 ? "bg-tableEven" : "bg-tableOdd"}`}
@@ -45,19 +51,19 @@ function AssignmentsPage() {
                   onClick={() =>
                     handleNavigate({
                       courseCode: code,
-                      assName: assignment.name,
+                      assFileName: assignment.name,
                     })
                   }
                 >
                   <td className="py-3">{index + 1}</td>
 
                   <td className="hidden py-3 lg:block">
-                    {assignment.name} &nbsp;
+                    {assignmentName} &nbsp;
                     <span className="text-xs">[click to view]</span>
                   </td>
 
                   <td className="flex items-center justify-center py-3 lg:hidden">
-                    {assignment.name} &nbsp;
+                    {assignmentName} &nbsp;
                     <span className="text-base">
                       <FaEye />
                     </span>
@@ -66,6 +72,8 @@ function AssignmentsPage() {
                   <td className="py-3 text-xs">
                     {FormatTime(assignment.created_at)}
                   </td>
+
+                  <td className="py-3 text-xs">{FormatTime(dueDate)}</td>
                 </tr>
               );
             })}

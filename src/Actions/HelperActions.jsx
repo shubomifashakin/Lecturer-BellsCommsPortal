@@ -39,8 +39,8 @@ export function SortArrayBasedOnCreatedAt(arr) {
   });
 }
 
-export function FormatTime(time) {
+export function FormatTime(time, style = "short") {
   return Intl.DateTimeFormat(navigator.language, {
-    dateStyle: "short",
+    dateStyle: style,
   }).format(new Date(time));
 }

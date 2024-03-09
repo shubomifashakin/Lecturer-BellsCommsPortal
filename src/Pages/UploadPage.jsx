@@ -9,6 +9,13 @@ import { DragDrop } from "../Components/DragDrop";
 import { UploadNewAssignment, UploadNewNote } from "../Actions/SupabaseActions";
 import LoadingScreen from "../Components/LoadingScreen";
 
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import "dayjs/locale/en-gb";
+
+import { FormatTime } from "../Actions/HelperActions";
+
 function UploadPage() {
   const { code: courseCode } = useParams();
   const { notes, assignments } = useRouteLoaderData("courseData");
@@ -19,10 +26,12 @@ function UploadPage() {
   const [uploading, setUploading] = useState(false);
   const [selection, setSelection] = useState("");
   const [file, setFile] = useState("");
+  const [submissionDate, setSubmissionDate] = useState("");
 
   const fileRef = useRef(null);
 
   const isNote = selection === "note";
+  const isAssignment = selection === "assignment";
 
   const navigate = useNavigate();
 
@@ -34,7 +43,21 @@ function UploadPage() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!file) return;
+    if (!file) {
+      toast.error("Please select a file");
+      return;
+    }
+
+    if (isAssignment && !submissionDate?.$D) {
+      toast.error("Please choose a date");
+      return;
+    }
+
+    let newAssName;
+    if (isAssignment) {
+      let timeForm = FormatTime(submissionDate.$d, "medium");
+      newAssName = assName + "-" + timeForm;
+    }
 
     try {
       setUploading(true);
@@ -42,11 +65,15 @@ function UploadPage() {
       //if it is a note, upload the note, if not upload the assignment
       isNote
         ? await UploadNewNote({ noteName, file, courseCode })
-        : await UploadNewAssignment({ assName, courseCode, file });
+        : await UploadNewAssignment({ assName: newAssName, courseCode, file });
 
+      //change to reducer function
       setUploading(false);
       setSelection("");
       setFile("");
+      setSubmissionDate("");
+
+      // dispatch({label:'reset})
 
       toast.success(`${isNote ? noteName : assName} Uploaded`);
 
@@ -106,10 +133,34 @@ function UploadPage() {
 
               <DragDrop setFile={setFile} fileRef={fileRef} file={file} />
             </InputGroup>
+
+            {selection === "assignment" && file ? (
+              <InputGroup label={"Date of Submission"}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale="en-gb"
+                >
+                  <DatePicker
+                    className="animate-flash"
+                    value={submissionDate}
+                    onChange={(newDate) => setSubmissionDate(dayjs(newDate))}
+                    views={["day", "month", "year"]}
+                    disablePast
+                    slotProps={{
+                      textField: {
+                        helperText: "DD/MM/YYYY",
+                      },
+                      field: { clearable: true },
+                    }}
+                  />
+                </LocalizationProvider>
+              </InputGroup>
+            ) : null}
           </div>
         ) : null}
 
-        {file ? (
+        {(selection === "assignment" && submissionDate) ||
+        (selection === "note" && file) ? (
           <Button
             flash={true}
             disabled={uploading}

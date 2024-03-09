@@ -63,7 +63,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "submissions/:code/:assName",
+        path: "submissions/:code/:assFileName",
         loader: SubmissionsLoader,
         errorElement: <ErrorElement />,
         element: (
