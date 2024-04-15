@@ -62,7 +62,7 @@ function HomePage() {
         </div>
 
         <div className="relative w-full overflow-y-auto">
-          <Table tableLabel={"Courses Offered"} headLabels={["S/N", "Course"]}>
+          <Table tableLabel={"Courses Selected"} headLabels={["S/N", "Course"]}>
             {courses2.map((course, index) => {
               return (
                 <tr
