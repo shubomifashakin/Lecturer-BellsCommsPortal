@@ -54,7 +54,10 @@ export function DragDrop({ setFile, fileRef, file }) {
           : "Click or Drag & Drop File"}
       </span>
 
-      <span className="text-xs font-semibold lowercase">pdf files</span>
+      <span className="text-xs font-semibold lowercase">
+        {" "}
+        pdf/ppt files only
+      </span>
     </div>
   );
 }

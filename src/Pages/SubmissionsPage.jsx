@@ -18,6 +18,7 @@ import {
 
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import { FaFilePdf } from "react-icons/fa";
+import Table from "../Components/Table";
 
 function SubmissionsPage() {
   const submissions = useLoaderData();
@@ -83,57 +84,42 @@ function SubmissionsPage() {
 
         {sortedSubmissions.length ? (
           <div className="w-full overflow-y-auto">
-            <h2 className="cursor-default border border-stone-400 bg-bellsBlue p-2 text-xs font-semibold uppercase text-white lg:text-left">
-              All Submissions ({sortedSubmissions.length})
-            </h2>
-
-            <table
-              className={`w-full divide-y divide-stone-400 overflow-hidden border border-stone-400 p-4 text-center `}
+            <Table
+              tableLabel={`All Submissions (${sortedSubmissions.length})`}
+              headLabels={["S/N", "Student", "Submitted"]}
             >
-              <thead className=" bg-bellsBlue text-white">
-                <tr className="divide-x divide-stone-400">
-                  <th className="py-3.5 text-sm lg:text-base">S/N</th>
+              {sortedSubmissions.map((submission, index) => {
+                const submissionName = submission.name.replace("-", "/");
 
-                  <th className="py-3.5 text-sm lg:text-base">Student</th>
+                return (
+                  <tr
+                    className={`cursor-pointer divide-x divide-stone-400   transition-all duration-300 ease-in-out hover:bg-bellsBlue hover:text-white ${index % 2 ? "bg-tableEven" : "bg-tableOdd"}`}
+                    key={index}
+                    onClick={() => handleDownload(submission.name)}
+                  >
+                    <td className="py-3">{index + 1}</td>
 
-                  <th className="py-3.5 text-sm lg:text-base">Submitted</th>
-                </tr>
-              </thead>
+                    <td className="hidden items-center justify-center py-3 lg:flex">
+                      <span className="w-64 truncate">{submissionName}</span>
 
-              <tbody className="divide-y divide-stone-400">
-                {sortedSubmissions.map((submission, index) => {
-                  const submissionName = submission.name.replace("-", "/");
+                      <span className="text-xs">[click to download]</span>
+                    </td>
 
-                  return (
-                    <tr
-                      className={`cursor-pointer divide-x divide-stone-400   transition-all duration-300 ease-in-out hover:bg-bellsBlue hover:text-white ${index % 2 ? "bg-tableEven" : "bg-tableOdd"}`}
-                      key={index}
-                      onClick={() => handleDownload(submission.name)}
-                    >
-                      <td className="py-3">{index + 1}</td>
+                    <td className="flex items-center justify-center py-3 lg:hidden">
+                      <span className="w-36 truncate">{submissionName}</span>
 
-                      <td className="hidden items-center justify-center py-3 lg:flex">
-                        <span className="w-64 truncate">{submissionName}</span>
+                      <span className="text-base">
+                        <IoCloudDownloadOutline />
+                      </span>
+                    </td>
 
-                        <span className="text-xs">[click to download]</span>
-                      </td>
-
-                      <td className="flex items-center justify-center py-3 lg:hidden">
-                        <span className="w-36 truncate">{submissionName}</span>
-
-                        <span className="text-base">
-                          <IoCloudDownloadOutline />
-                        </span>
-                      </td>
-
-                      <td className="py-3 text-xs">
-                        {FormatTime(submission.created_at)}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                    <td className="py-3 text-xs">
+                      {FormatTime(submission.created_at)}
+                    </td>
+                  </tr>
+                );
+              })}
+            </Table>
           </div>
         ) : (
           <NoNotesOrAss label={"Submissions"} />

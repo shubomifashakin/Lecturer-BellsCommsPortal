@@ -125,7 +125,7 @@ function UploadPage() {
               <input
                 type="file"
                 className="lg:hidden"
-                accept=".pdf"
+                accept=".pdf,.ppt,.pptx"
                 ref={fileRef}
                 id="File"
                 onChange={storeSelectedFile}
